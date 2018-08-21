@@ -1,0 +1,90 @@
+<!DOCTYPE html><html>
+  <body>
+    <h1> Upload files</h1>
+    <progress value="0" max="100" id="uploadProgress">0%</progress>
+    <input type="file" id="uploadButton" accept="image/*"/>
+    <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
+            <script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyB268OF03nFI2zI5CSW1lJQBIAUN_k3ac8",
+    authDomain: "papers-bank-fd1e7.firebaseapp.com",
+    databaseURL: "https://papers-bank-fd1e7.firebaseio.com",
+    projectId: "papers-bank-fd1e7",
+    storageBucket: "papers-bank-fd1e7.appspot.com",
+    messagingSenderId: "604545244184"
+  };
+  firebase.initializeApp(config);
+</script>
+<script>
+  var storage=firebase.storage();
+  var progress = document.getElementById("uploadProgress");
+  var button1 = document.getElementById("uploadButton");
+  button1.addEventListener('change', function(e){
+                  var file = e.target.files[0];
+                  var storageRef = firebase.storage().ref('image/'+ file.name);
+                 var uploadTask = storageRef.put(file);
+                 uploadTask.on('state_changed',loadUpload,errUpload,completeUpload)
+                 function loadUpload(data){
+                  var percent =(data.bytesTransferred/data.totalBytes)*100
+                  progress.value=percent
+                }
+                function errUpload(err){
+                  console.log('error')
+                  console.log(err)
+                }
+                function completeUpload(data)
+                {
+                  console.log('success')
+                  console.log(data)
+
+                }
+                 });
+
+</script>
+
+	
+    <!--<script>
+           	function submitting(){
+              var fileButton = document.getElementById("fileButton");
+              fileButton.addEventListener('change', function(e){
+                  var file = e.target.files[0];
+                  var storageRef = firebase.storage().ref(file.name);
+                   storageRef.put(file);
+
+
+
+          }); 
+          var storageRef = firebase.storage().ref('some/storage/bucket');
+var saveDataRef = firebase.database().ref('users/');
+var uploadTask = storageRef.put(file);
+
+uploadTask.on('state_changed', uploadTick, (err)=> {
+  console.log('Upload error:', err);
+}, ()=> {
+  saveDataRef.update({
+    name:'alex',
+    age:23,
+    profession:'superhero',
+    image:uploadTask.snapshot.downloadURL
+  });
+});
+uploadTick(snap){
+  console.log("update ticked", snap);
+  this.setState({
+    bytesTransferred:snap.bytesTransferred,
+    totalBytes:snap.totalBytes
+   })
+} 
+          }
+           </script>
+
+        <body>
+            <input type="file" id="fileButton" accept="image/*"/>
+            <button type="button" onclick="submitting()">submit</button> -->
+            
+
+       
+      </body>
+</html>
